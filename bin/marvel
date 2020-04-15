@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+#environment:
+require_relative '../lib/marvel.rb'
+
+Marvel::CLI.new.call
