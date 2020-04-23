@@ -24,10 +24,11 @@ class Marvel::CLI
         input = gets.strip.downcase
         return input if input == "exit"
         if !valid?(input)
-            puts "\n\nError! Type 'menu' to view the menu or 'exit' to exit.\n\n"
+            puts "\n\nError! Please enter valid input.\n\n\n"
             return "invalid"
-        end
+        else
         return input.to_i - 1
+        end
     end
 
     def display_characters
@@ -40,16 +41,17 @@ class Marvel::CLI
 
     def display_single_character(input)
         m = Marvel::Characters.all[input]
-        Marvel::APIManager.get_more_character_info(m) if !m.full?
+        Marvel::APIManager.get_more_character_info(m) #if !m.full?
         puts "\n-----\nNAME:\n-----\n#{m}\n"
         puts "\n----\nBIO:\n----\n#{m.description}\n"
         puts "\n------\nCOMICS:\n------\n#{m} is in #{m.comics} comics.\n\n"
         puts "Press any key to view the list of characters."
         gets
+      
     end
 
     def valid?(i)
-        i.to_i.between?(0, Marvel::Characters.all.length - 1)
+        i.to_i.between?(1, Marvel::Characters.all.length)
     end
 
     def menu

@@ -32,16 +32,13 @@ class Marvel::Characters
         @@all << self
     end
 
-    def full? #checks to see if there is data in the @description instance variable. Works with the Marvel::CLI.display_single_character method
-        !!@description
-        !!@comics
-    end
+    # def full? #checks to see if there is data in the @description instance variable. Works with the Marvel::CLI.display_single_character method
+    #     !!@description
+    # end
     
     def to_s #when a character is printed, this is what we'll see. works with my Marvel::CLI.display_characters method
         name.capitalize
     end
-
-
 
 
 end
