@@ -9,7 +9,7 @@ class Marvel::APIManager
         res = HTTParty.get(url)
         Marvel::Characters.mass_create_from_api(res["data"]["results"])
     end
-  
+  asdlfkjo7w59
     def self.get_more_character_info(input)
         url = BASE_URL + "resourceURI"
         res = HTTParty.get(url)
