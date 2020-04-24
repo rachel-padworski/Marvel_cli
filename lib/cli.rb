@@ -3,26 +3,53 @@ require 'pry'
 
 class Marvel::CLI
 
+    def initialize
+        @page = 1
+        @limit = 20
+    end
+
     def call
-        Marvel::APIManager.get_characters
         welcome
+        get_character_data
         marvel_loop
         exit
+    end
+
+    def get_character_data
+        Marvel::APIManager.get_characters(@page, @limit)
     end
 
     def marvel_loop
         loop do
             menu
             input = get_character_choice 
-            break if input == "exit"
-            next if input == "invalid"
-            display_single_character(input)
+            case input
+            when "exit"
+                break
+            when "invalid"
+                next
+            when "next"
+                @page += 1
+                _, stop = get_page_range 
+                if Marvel::Characters.all.length < stop 
+                    get_character_data #all of my characters should be less than my current stop, otherwise I need to get character data from my current page.
+                end
+            when "prev"
+                if @page <= 1
+                    puts "Error. You're currently on page 1."
+                else
+                    @page -= 1
+                end
+            else
+                display_single_character(input)
+            end
         end
     end
 
     def get_character_choice
+        commands = ["exit", "next", "prev"]
         input = gets.strip.downcase
-        return input if input == "exit"
+        return input.downcase if commands.include?(input.downcase)
         if !valid?(input)
             puts "\n\nError! Please enter valid input.\n\n\n"
             return "invalid"
@@ -32,19 +59,26 @@ class Marvel::CLI
     end
 
     def display_characters
-        Marvel::Characters.all.each.with_index do |character, index|
+        start, stop = get_page_range
+        puts "\n\n-----\nPAGE: #{@page}\n-----\n\n"
+        Marvel::Characters.all[start ... stop].each.with_index(start) do |character, index|
             puts "#{index+1}. #{character}"
             #overriding the to_s method from Ruby. printing out the characters. 
             #We don't want to see the object ID, but the object
         end
     end
 
+    def get_page_range
+        [(@page - 1) * @limit, @page * @limit]
+    end
+
     def display_single_character(input)
         m = Marvel::Characters.all[input]
-        Marvel::APIManager.get_more_character_info(m) #if !m.full?
+        Marvel::APIManager.get_more_character_info(m) 
         puts "\n-----\nNAME:\n-----\n#{m}\n"
         puts "\n----\nBIO:\n----\n#{m.description}\n"
         puts "\n------\nCOMICS:\n------\n#{m} is in #{m.comics} comics.\n\n"
+        puts "\n------\nSTORIES:\n------\n#{m} is in #{m.story_count} stories.\n\n"
         puts "Press any key to view the list of characters."
         gets
       
@@ -56,7 +90,7 @@ class Marvel::CLI
 
     def menu
         display_characters
-        puts "\n\nPlease choose a character by number or type 'exit' to exit.\n\n"
+        puts "\n\nPlease choose a character by number, type 'next' to view the next page of Marvel characters #{@page > 1}, type 'prev' to view the previous page, or type 'exit' to exit the program.\n\n"
     end
 
     def welcome
@@ -69,7 +103,7 @@ class Marvel::CLI
     end
 
 
-
+end
     # def call
     #     Marvel::APIManager.get_characters
     #     welcome
@@ -168,5 +202,4 @@ class Marvel::CLI
     #     #return
     # end
 
- 
-end
+

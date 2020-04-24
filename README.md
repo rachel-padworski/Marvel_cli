@@ -1,8 +1,7 @@
 # Marvel
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/marvel`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to the world of Marvel where you'll find a search engine for all characters using the Marvel API. You'll be able to view their name, bio, and number of comics they are in. Enjoy!
 
-TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
@@ -22,7 +21,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Run bin/marvel in your terminal to view a list of the characters, then follow the instructions to view more information about each character.
 
 ## Development
 
