@@ -1,4 +1,4 @@
-# in charge of making a character a character. It's the model.
+#model
 require 'pry'
 
 class Marvel::Characters
@@ -18,7 +18,7 @@ class Marvel::Characters
 
     def initialize(name, resource_uri, description, comics)
         @name = name
-        @resource_uri = resource_uri  #this method works with my APIManager.get_character_info
+        @resource_uri = resource_uri 
         @description = description
         @comics = comics.length
         @story_count = nil
@@ -38,7 +38,7 @@ class Marvel::Characters
     end
 
     def description
-        @description.nil? || @description == '' ? "No bio found" : @description
+        @description.nil? || @description == '' ? "(No bio found)" : @description
     end
 
 
